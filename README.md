@@ -12,7 +12,10 @@ sudo apt-get install fzf
 
 
 # Download the alias file to the desired directory
-curl -O https://github.com/ipsitkumar/kubectl-command-alias/blob/main/kube_alias.bash
+wget https://raw.githubusercontent.com/ipsitkumar/kubectl-command-alias/main/kube_alias.bash
+
+# usingCURL
+curl -LO https://raw.githubusercontent.com/ipsitkumar/kubectl-command-alias/main/kube_alias.bash
 
 mv kube_alias.bash ~
 
