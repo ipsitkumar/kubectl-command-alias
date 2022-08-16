@@ -124,7 +124,37 @@ function kdesrs() {
     kubectl describe rs $(< /tmp/cmd) ; fi && rm -f /tmp/cmd
 }
 
+function kedit() {
+    echo -n "Enter what to be edited: " && read arg &&  \
+    kubectl get $arg --all-namespaces | sed 1d | fzf -q "$1" --no-sort -m --tac | awk '{ print $2 " -n " $1 }' | \
+    tee /tmp/cmd &&   \
+    if [ -s /tmp/cmd ]; then \
+    kubectl edit $arg $(< /tmp/cmd) ; fi && rm -f /tmp/cmd
+}
 
+function kl() {
+    kubectl get pods --all-namespaces | sed 1d | fzf -q "$1" --no-sort -m --tac | awk '{ print $2 " -n " $1 }' | \
+    tee /tmp/cmd &&   \
+    if [ -s /tmp/cmd ]; then \
+    echo -n "Enter Arg: " && read arg &&  \
+    kubectl logs $arg $(< /tmp/cmd) ; fi && rm -f /tmp/cmd
+}
+
+function kdes() {
+    echo -n "Enter what to be described: " && read arg &&  \
+    kubectl get $arg --all-namespaces | sed 1d | fzf -q "$1" --no-sort -m --tac | awk '{ print $2 " -n " $1 }' | \
+    tee /tmp/cmd &&   \
+    if [ -s /tmp/cmd ]; then \
+    kubectl describe $arg $(< /tmp/cmd) ; fi && rm -f /tmp/cmd
+}
+
+function kdel() {
+    echo -n "Enter what to be deleted: " && read arg &&  \
+    kubectl get $arg --all-namespaces | sed 1d | fzf -q "$1" --no-sort -m --tac | awk '{ print $2 " -n " $1 }' | \
+    tee /tmp/cmd &&   \
+    if [ -s /tmp/cmd ]; then \
+    kubectl delete $arg $(< /tmp/cmd) ; fi && rm -f /tmp/cmd
+}
 
 alias kgpv="kubectl get pv"
 alias kgpvc="kubectl get pvc"
@@ -142,7 +172,6 @@ alias kgsecret="kubectl get secret"
 alias kci="kubectl cluster-info"
 alias kc="kubectl create"
 alias kd="kubectl delete"
-alias kdes="kubectl describe"
 alias kg="kubectl get"
 alias ka="kubectl apply"
 alias k="kubectl"
