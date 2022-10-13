@@ -1,10 +1,10 @@
 #KubeCmds
 function installk3s() {
-	curl -sfL https://get.k3s.io | sh -
+    curl -sfL https://get.k3s.io | sh -
 }
 
 function uninstallk3s() {
-	k3s-uninstall.sh
+    k3s-uninstall.sh
 }
 
 function kdeldep() {
@@ -125,7 +125,12 @@ function kdesrs() {
 }
 
 function kedit() {
-    echo -n "Enter what to be edited: " && read arg &&  \
+    if [[ $# -lt 1 || $# -gt 1 ]]; then
+        echo -n "Enter what to edit?: " && read arg
+    else
+       arg=$1
+       shift
+    fi
     kubectl get $arg --all-namespaces | sed 1d | fzf -q "$1" --no-sort -m --tac | awk '{ print $2 " -n " $1 }' | \
     tee /tmp/cmd &&   \
     if [ -s /tmp/cmd ]; then \
@@ -141,7 +146,12 @@ function kl() {
 }
 
 function kdes() {
-    echo -n "Enter what to be described: " && read arg &&  \
+    if [[ $# -lt 1 || $# -gt 1 ]]; then
+        echo -n "Enter what to describe?: " && read arg
+    else
+        arg=$1
+        shift
+    fi
     kubectl get $arg --all-namespaces | sed 1d | fzf -q "$1" --no-sort -m --tac | awk '{ print $2 " -n " $1 }' | \
     tee /tmp/cmd &&   \
     if [ -s /tmp/cmd ]; then \
@@ -149,7 +159,12 @@ function kdes() {
 }
 
 function kdel() {
-    echo -n "Enter what to be deleted: " && read arg &&  \
+    if [[ $# -lt 1 || $# -gt 1 ]]; then
+        echo -n "Enter what to delete?: " && read arg
+    else
+        arg=$1
+        shift
+    fi
     kubectl get $arg --all-namespaces | sed 1d | fzf -q "$1" --no-sort -m --tac | awk '{ print $2 " -n " $1 }' | \
     tee /tmp/cmd &&   \
     if [ -s /tmp/cmd ]; then \
